@@ -8,6 +8,13 @@ const muteBtn = document.getElementById("mute-btn");
 function toggleMute() {
     audio.muted = !audio.muted;
     muteBtn.textContent = audio.muted ? "🔇" : "🔊";
+    const player = document.querySelector(".player");
+
+    if (audio.muted) {
+        player.classList.remove("glow-active");
+    } else {
+        player.classList.add("glow-active");
+    }
 }
 
 async function loadConfig() {
