@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  background: #111;
+  color: white;
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.player {
+  text-align: center;
+  background: #222;
+  padding: 40px;
+  border-radius: 16px;
+  width: 400px;
+}
+
+.controls button {
+  font-size: 30px;
+  margin: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+}

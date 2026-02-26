@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Vice City Radio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="player">
+    <h1 id="station-name">Loading...</h1>
+    <div id="clock"></div>
+
+    <audio id="audio" preload="auto"></audio>
+
+    <div class="controls">
+      <button onclick="prevStation()">⏮</button>
+      <button onclick="nextStation()">⏭</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
