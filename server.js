@@ -31,7 +31,7 @@ function parseConfig(filePath) {
   return config;
 }
 
-const configPath = path.join("/music", "vc-radio.conf");
+const configPath = path.join("/data", "vc-radio.conf");
 const config = parseConfig(configPath);
 
 const MUSIC_FOLDER = config.general.music_folder;
