@@ -1,0 +1,9 @@
+services:
+  vc-radio:
+    image: ghcr.io/dragenox/vc-radio:latest
+    container_name: vc-radio
+    ports:
+      - "22318:22318"
+    volumes:
+      - ./music:/data:ro
+    restart: unless-stopped
