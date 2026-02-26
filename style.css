@@ -1,25 +1,44 @@
 body {
-  margin: 0;
-  background: #111;
-  color: white;
-  font-family: sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+    margin: 0;
+    background: #111;
+    color: white;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .player {
-  text-align: center;
-  background: #222;
-  padding: 40px;
-  border-radius: 16px;
-  width: 400px;
+    text-align: center;
+    background: #222;
+    padding: 40px;
+    border-radius: 16px;
+    width: 400px;
 }
 
 .controls button {
-  font-size: 30px;
-  margin: 20px;
-  padding: 10px 20px;
-  cursor: pointer;
+    background-color: #333;
+    color: white;
+    font-size: 30px;
+    margin: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px #111;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease;
+}
+
+.controls button:hover {
+    background-color: #444;
+    transform: translateY(2px);
+    box-shadow: 0 4px 8px #000;
+}
+
+.controls button:active {
+    transform: translateY(1px) scale(0.95);
+    box-shadow: 0 1px 2px #000;
 }

@@ -3,6 +3,12 @@ let GLOBAL_LOOP_SECONDS = 0;
 let stations = [];
 let currentStation = 1;
 const audio = document.getElementById("audio");
+const muteBtn = document.getElementById("mute-btn");
+
+function toggleMute() {
+  audio.muted = !audio.muted;
+  muteBtn.textContent = audio.muted ? "🔇" : "🔊";
+}
 
 async function loadConfig() {
   const res = await fetch("/api/config");
@@ -36,11 +42,13 @@ function playStation(id) {
 
     // Start muted so autoplay is allowed
     audio.muted = true;
+    muteBtn.textContent = "🔇";
 
     audio.play().then(() => {
       // If tab is focused, unmute immediately
       if (document.hasFocus()) {
         audio.muted = false;
+        muteBtn.textContent = "🔊";
       }
     }).catch(() => {
       // If autoplay still fails, do nothing (user can press play)
@@ -82,7 +90,20 @@ function initFromURL() {
 window.addEventListener("focus", () => {
   if (!audio.paused && audio.muted) {
     audio.muted = false;
+    muteBtn.textContent = "🔊";
   }
 });
+
+document.addEventListener("click", () => {
+  // If autoplay was blocked or still muted, enable audio on first click
+  if (audio.muted) {
+    audio.muted = false;
+    muteBtn.textContent = "🔊";
+  }
+
+  if (audio.paused) {
+    audio.play().catch(() => {});
+  }
+}, { once: true });
 
 loadConfig();
