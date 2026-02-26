@@ -59,14 +59,27 @@ const server = http.createServer((req, res) => {
   }
 
   if (req.url.startsWith("/music/")) {
-    const filePath = path.join(__dirname, MUSIC_FOLDER, req.url.replace("/music/", ""));
+    const filePath = path.join(MUSIC_FOLDER, req.url.replace("/music/", ""));
+
     if (fs.existsSync(filePath)) {
-      res.writeHead(200, { "Content-Type": "audio/mpeg" });
+
+      const ext = path.extname(filePath).toLowerCase();
+      const contentType = {
+        ".mp3": "audio/mpeg",
+        ".png": "image/png",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".webp": "image/webp"
+      }[ext] || "application/octet-stream";
+
+      res.writeHead(200, { "Content-Type": contentType });
       fs.createReadStream(filePath).pipe(res);
+
     } else {
       res.writeHead(404);
       res.end("Not found");
     }
+
     return;
   }
 
