@@ -7,15 +7,16 @@
 </head>
 <body>
   <div class="player">
+    <img id="album-art" src="" alt="Album Art" />
     <h1 id="station-name">Loading...</h1>
     <div id="clock"></div>
 
     <audio id="audio" preload="auto"></audio>
 
     <div class="controls">
-      <button onclick="prevStation()">⏮</button>
-      <button id="mute-btn" onclick="toggleMute()">🔊</button>
-      <button onclick="nextStation()">⏭</button>
+      <button class="glow-on-hover" onclick="prevStation()">⏮</button>
+      <button id="mute-btn" class="glow-on-hover" onclick="toggleMute()">🔊</button>
+      <button class="glow-on-hover" onclick="nextStation()">⏭</button>
     </div>
   </div>
 

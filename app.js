@@ -6,104 +6,107 @@ const audio = document.getElementById("audio");
 const muteBtn = document.getElementById("mute-btn");
 
 function toggleMute() {
-  audio.muted = !audio.muted;
-  muteBtn.textContent = audio.muted ? "🔇" : "🔊";
+    audio.muted = !audio.muted;
+    muteBtn.textContent = audio.muted ? "🔇" : "🔊";
 }
 
 async function loadConfig() {
-  const res = await fetch("/api/config");
-  const config = await res.json();
+    const res = await fetch("/api/config");
+    const config = await res.json();
 
-  SERVER_START_TIME = config.server_start_time * 1000;
-  GLOBAL_LOOP_SECONDS = config.shortest_duration;
-  stations = config.stations;
+    SERVER_START_TIME = config.server_start_time * 1000;
+    GLOBAL_LOOP_SECONDS = config.shortest_duration;
+    stations = config.stations;
 
-  initFromURL();
+    initFromURL();
 }
 
 function getGlobalOffset() {
-  const now = Date.now();
-  const elapsed = (now - SERVER_START_TIME) / 1000;
-  return elapsed % GLOBAL_LOOP_SECONDS;
+    const now = Date.now();
+    const elapsed = (now - SERVER_START_TIME) / 1000;
+    return elapsed % GLOBAL_LOOP_SECONDS;
 }
 
 function playStation(id) {
-  const station = stations.find(s => s.id === id);
-  if (!station) return;
+    const station = stations.find(s => s.id === id);
+    if (!station) return;
 
-  currentStation = id;
-  audio.src = station.file;
-  document.getElementById("station-name").innerText = station.name;
+    currentStation = id;
+    audio.src = station.file;
+    const albumArt = document.getElementById("album-art");
+    albumArt.src = station.file
+        .replace(".mp3", "_art.png");
+    document.getElementById("station-name").innerText = station.name;
 
-  audio.addEventListener("loadedmetadata", () => {
-    const offset = getGlobalOffset();
-    const safeOffset = Math.min(offset, audio.duration - 1);
-    audio.currentTime = safeOffset;
+    audio.addEventListener("loadedmetadata", () => {
+        const offset = getGlobalOffset();
+        const safeOffset = Math.min(offset, audio.duration - 1);
+        audio.currentTime = safeOffset;
 
-    // Start muted so autoplay is allowed
-    audio.muted = true;
-    muteBtn.textContent = "🔇";
+        // Start muted so autoplay is allowed
+        audio.muted = true;
+        muteBtn.textContent = "🔇";
 
-    audio.play().then(() => {
-      // If tab is focused, unmute immediately
-      if (document.hasFocus()) {
-        audio.muted = false;
-        muteBtn.textContent = "🔊";
-      }
-    }).catch(() => {
-      // If autoplay still fails, do nothing (user can press play)
-    });
+        audio.play().then(() => {
+            // If tab is focused, unmute immediately
+            if (document.hasFocus()) {
+                audio.muted = false;
+                muteBtn.textContent = "🔊";
+            }
+        }).catch(() => {
+            // If autoplay still fails, do nothing (user can press play)
+        });
 
-  }, { once: true });
+    }, { once: true });
 }
 
 function nextStation() {
-  let next = currentStation + 1;
-  if (next > stations.length) next = 1;
-  playStation(next);
-  history.pushState(null, "", "/" + next);
+    let next = currentStation + 1;
+    if (next > stations.length) next = 1;
+    playStation(next);
+    history.pushState(null, "", "/" + next);
 }
 
 function prevStation() {
-  let prev = currentStation - 1;
-  if (prev < 1) prev = stations.length;
-  playStation(prev);
-  history.pushState(null, "", "/" + prev);
+    let prev = currentStation - 1;
+    if (prev < 1) prev = stations.length;
+    playStation(prev);
+    history.pushState(null, "", "/" + prev);
 }
 
 function initFromURL() {
-  const path = window.location.pathname.replace("/", "");
+    const path = window.location.pathname.replace("/", "");
 
-  if (!path) {
-    const random = Math.floor(Math.random() * stations.length) + 1;
-    playStation(random);
-  } else {
-    const stationNum = parseInt(path);
-    if (stationNum >= 1 && stationNum <= stations.length) {
-      playStation(stationNum);
+    if (!path) {
+        const random = Math.floor(Math.random() * stations.length) + 1;
+        playStation(random);
     } else {
-      playStation(1);
+        const stationNum = parseInt(path);
+        if (stationNum >= 1 && stationNum <= stations.length) {
+            playStation(stationNum);
+        } else {
+            playStation(1);
+        }
     }
-  }
 }
 
 window.addEventListener("focus", () => {
-  if (!audio.paused && audio.muted) {
-    audio.muted = false;
-    muteBtn.textContent = "🔊";
-  }
+    if (!audio.paused && audio.muted) {
+        audio.muted = false;
+        muteBtn.textContent = "🔊";
+    }
 });
 
 document.addEventListener("click", () => {
-  // If autoplay was blocked or still muted, enable audio on first click
-  if (audio.muted) {
-    audio.muted = false;
-    muteBtn.textContent = "🔊";
-  }
+    // If autoplay was blocked or still muted, enable audio on first click
+    if (audio.muted) {
+        audio.muted = false;
+        muteBtn.textContent = "🔊";
+    }
 
-  if (audio.paused) {
-    audio.play().catch(() => {});
-  }
+    if (audio.paused) {
+        audio.play().catch(() => { });
+    }
 }, { once: true });
 
 loadConfig();

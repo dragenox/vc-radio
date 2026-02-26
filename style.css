@@ -23,16 +23,12 @@ body {
     font-size: 30px;
     margin: 20px;
     padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px #111;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
-    transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease;
 }
 
-.controls button:hover {
+/* .controls button:hover {
     background-color: #444;
     transform: translateY(2px);
     box-shadow: 0 4px 8px #000;
@@ -41,4 +37,71 @@ body {
 .controls button:active {
     transform: translateY(1px) scale(0.95);
     box-shadow: 0 1px 2px #000;
+} */
+
+.glow-on-hover {
+    border: none;
+    outline: none;
+    color: #fff;
+    background: #333;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 10px;
+}
+
+.glow-on-hover:before {
+    content: '';
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    position: absolute;
+    top: -2px;
+    left:-2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+}
+
+.glow-on-hover:active {
+    color: #fff
+}
+
+.glow-on-hover:active:after {
+    background: transparent;
+}
+
+.glow-on-hover:hover:before {
+    opacity: 1;
+}
+
+.glow-on-hover:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #333;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+}
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+
+#album-art {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 20px auto;
+    border-radius: 12px;
 }
