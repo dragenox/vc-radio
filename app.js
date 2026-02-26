@@ -33,7 +33,19 @@ function playStation(id) {
     const offset = getGlobalOffset();
     const safeOffset = Math.min(offset, audio.duration - 1);
     audio.currentTime = safeOffset;
-    audio.play();
+
+    // Start muted so autoplay is allowed
+    audio.muted = true;
+
+    audio.play().then(() => {
+      // If tab is focused, unmute immediately
+      if (document.hasFocus()) {
+        audio.muted = false;
+      }
+    }).catch(() => {
+      // If autoplay still fails, do nothing (user can press play)
+    });
+
   }, { once: true });
 }
 
@@ -66,5 +78,11 @@ function initFromURL() {
     }
   }
 }
+
+window.addEventListener("focus", () => {
+  if (!audio.paused && audio.muted) {
+    audio.muted = false;
+  }
+});
 
 loadConfig();
