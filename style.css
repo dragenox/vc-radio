@@ -13,19 +13,28 @@ body {
     text-align: center;
     background: #222;
     padding: 40px;
-    border-radius: 16px;
-    width: 400px;
+    border-radius: 20px;
+    width: 92vw;
+    max-width: 420px;
+    box-sizing: border-box;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 20px;
 }
 
 .controls button {
     background-color: #333;
     color: white;
-    font-size: 30px;
-    margin: 20px;
-    padding: 10px 20px;
+    font-size: 32px;
+    width: 80px;
+    height: 80px;
+    border-radius: 18px;
+    border: none;
     cursor: pointer;
-    text-align: center;
-    text-decoration: none;
 }
 
 /* .controls button:hover {
@@ -98,10 +107,39 @@ body {
 }
 
 #album-art {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
+    width: 220px;
+    height: 220px;
+    object-fit: cover;
     display: block;
-    margin: 0 auto 20px auto;
-    border-radius: 12px;
+    margin: 0 auto 24px auto;
+    border-radius: 18px;
+}
+
+@media (max-width: 480px) {
+
+    .player {
+        width: 94vw;
+        padding: 28px 20px;
+        border-radius: 18px;
+    }
+
+    #album-art {
+        width: 60vw;
+        height: 60vw;
+        max-width: 240px;
+        max-height: 240px;
+    }
+
+    .controls button {
+        width: 22vw;
+        height: 22vw;
+        max-width: 90px;
+        max-height: 90px;
+        font-size: 30px;
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
 }
